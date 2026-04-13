@@ -1,555 +1,886 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>透明的孩子 | The Transparent Child</title>
-  <meta name="description" content="《透明的孩子》作品介紹頁，適用於 GitHub Pages 的穩定靜態版本。" />
-  <style>
-    * { box-sizing: border-box; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>透明的孩子 | The Wingless Child</title>
 
-    :root {
-      --bg: #f5f5f7;
-      --card: rgba(255,255,255,0.72);
-      --text: #111111;
-      --sub: rgba(17,17,17,0.64);
-      --line: rgba(17,17,17,0.08);
-      --shadow: 0 20px 60px rgba(0,0,0,0.10);
-      --radius: 28px;
-      --max: 1180px;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    html {
-      scroll-behavior: smooth;
-    }
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:#f2f2f2;
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang TC",sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(90,90,90,.18), transparent 30%),
+    linear-gradient(180deg, #6a6a6a 0%, #4a4a4a 20%, #2e2e2e 52%, #191919 100%);
+  overflow-x:hidden;
+  position:relative;
+}
 
-    body {
-      margin: 0;
-      background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.95), rgba(245,245,247,0.92) 40%, rgba(236,236,239,0.92) 100%);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang TC", "Noto Sans TC", sans-serif;
-      line-height: 1.65;
-    }
+/* 顆粒感 */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.12;
+  z-index:9999;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='2' stitchTiles='stitch'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='1'/></svg>");
+  mix-blend-mode:soft-light;
+}
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
 
-    img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
+.section{
+  width:min(1200px, calc(100% - 32px));
+  margin:0 auto;
+}
 
-    .wrap {
-      width: min(calc(100% - 28px), var(--max));
-      margin: 0 auto;
-    }
+/* ===== HERO ===== */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  padding:40px 20px;
+}
 
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      backdrop-filter: blur(18px);
-      background: rgba(245,245,247,0.68);
-      border-bottom: 1px solid rgba(17,17,17,0.06);
-    }
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at center, rgba(255,255,255,.05), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.18));
+  pointer-events:none;
+}
 
-    .nav-inner {
-      width: min(calc(100% - 28px), var(--max));
-      margin: 0 auto;
-      min-height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
+.main-container{
+  position:relative;
+  width:80vw;
+  max-width:820px;
+  aspect-ratio:16/9;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:2;
+  opacity:0;
+  animation:logoEntrance 2.2s cubic-bezier(.165,.84,.44,1) forwards;
+}
 
-    .brand {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
+.main-img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  animation:glow 3.5s ease-in-out infinite;
+  filter:drop-shadow(0 0 20px rgba(255,255,255,.08));
+}
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+/* kite */
+.kite-group{
+  position:absolute;
+  left:79%;
+  bottom:-260px;
+  z-index:1;
+  animation:kiteRise 12s linear infinite;
+  will-change:transform;
+}
 
-    .chip {
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      color: var(--sub);
-      background: rgba(255,255,255,0.58);
-      border: 1px solid rgba(17,17,17,0.06);
-      transition: transform 0.25s ease, background 0.25s ease;
-    }
+.kite-head{
+  width:38px;
+  height:48px;
+  background:#c9c9c9;
+  clip-path:polygon(50% 0%,100% 45%,50% 100%,0% 45%);
+  box-shadow:inset -3px -3px 10px rgba(0,0,0,.25);
+  opacity:.95;
+}
 
-    .chip:hover {
-      transform: translateY(-1px);
-      background: rgba(255,255,255,0.9);
-    }
+.kite-string{
+  position:absolute;
+  top:45px;
+  left:50%;
+  width:1.5px;
+  height:150px;
+  background:linear-gradient(to bottom, rgba(255,255,255,.55), transparent);
+  transform-origin:top center;
+  animation:stringSway 3s ease-in-out infinite;
+}
 
-    .hero {
-      padding: 48px 0 22px;
-    }
+.scroll-hint{
+  position:absolute;
+  bottom:28px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:3;
+  font-size:12px;
+  letter-spacing:3px;
+  color:rgba(255,255,255,.65);
+  text-transform:uppercase;
+}
 
-    .hero-card {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 34px;
-      align-items: center;
-      background: var(--card);
-      backdrop-filter: blur(18px);
-      border: 1px solid var(--line);
-      border-radius: 36px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      padding: 28px;
-    }
+@keyframes stringSway{
+  0%,100%{transform:translateX(-50%) rotate(-5deg)}
+  50%{transform:translateX(-50%) rotate(10deg)}
+}
+@keyframes kiteRise{
+  0%{transform:translateY(0) rotate(-10deg);opacity:0}
+  10%{opacity:.75}
+  90%{opacity:.75}
+  100%{transform:translateY(-140vh) rotate(15deg);opacity:0}
+}
+@keyframes logoEntrance{
+  0%{transform:scale(1.08);opacity:0;filter:blur(14px)}
+  100%{transform:scale(1);opacity:1;filter:blur(0)}
+}
+@keyframes glow{
+  0%,100%{filter:drop-shadow(0 0 10px rgba(255,255,255,.12))}
+  50%{filter:drop-shadow(0 0 24px rgba(255,255,255,.22))}
+}
 
-    .poster-shell {
-      position: relative;
-      border-radius: 24px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.6);
-      border: 1px solid rgba(17,17,17,0.06);
-      box-shadow: 0 12px 34px rgba(0,0,0,0.09);
-      aspect-ratio: 3 / 4;
-      min-height: 380px;
-    }
+/* ===== shared headings ===== */
+.block-title{
+  font-family:"Noto Serif TC", serif;
+  font-size:clamp(26px, 4vw, 40px);
+  letter-spacing:.04em;
+  margin:0 0 16px;
+}
+.block-sub{
+  color:rgba(255,255,255,.62);
+  font-size:14px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
 
-    .poster-shell img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+/* ===== gallery ===== */
+.gallery-wrap{
+  padding:30px 0 16px;
+}
+.gallery{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  padding:0 16px 10px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+.gallery::-webkit-scrollbar{height:6px}
+.gallery::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.18);
+  border-radius:999px;
+}
+.frame{
+  flex:0 0 auto;
+  width:min(72vw, 560px);
+  aspect-ratio:16/9;
+  border-radius:22px;
+  overflow:hidden;
+  scroll-snap-align:center;
+  box-shadow:0 18px 40px rgba(0,0,0,.28);
+  background:#444;
+  border:1px solid rgba(255,255,255,.06);
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+.frame:hover{
+  transform:translateY(-4px) scale(1.01);
+  box-shadow:0 24px 50px rgba(0,0,0,.34);
+}
+.frame img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:saturate(.78) contrast(1.03) brightness(.93);
+}
 
-    .poster-fallback {
-      width: 100%;
-      height: 100%;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 24px;
-      color: rgba(17,17,17,0.46);
-      font-size: 15px;
-      letter-spacing: 0.02em;
-      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(236,236,239,0.9));
-    }
+/* ===== synopsis ===== */
+.synopsis-section{
+  padding:72px 0 24px;
+}
+.synopsis-wrapper{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:0 20px;
+}
+.synopsis-scale-box{
+  transform-origin:center;
+}
+.poster-box{
+  position:relative;
+  width:400px;
+  height:600px;
+  cursor:pointer;
+  transition:transform .4s cubic-bezier(.175,.885,.32,1.275);
+}
+.poster-box:hover{
+  transform:scale(1.02);
+}
+.poster-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:10px;
+  box-shadow:0 20px 50px rgba(0,0,0,.45);
+  filter:saturate(.8) brightness(.92);
+}
+.click-badge{
+  position:absolute;
+  bottom:-20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(235,235,235,.12);
+  border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(12px);
+  color:#fff;
+  padding:9px 20px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:2px;
+  white-space:nowrap;
+  animation:breathe 2s infinite;
+}
+@keyframes breathe{
+  0%,100%{transform:translate(-50%,0);opacity:.82}
+  50%{transform:translate(-50%,-5px);opacity:1}
+}
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.85);
-      border: 1px solid rgba(17,17,17,0.06);
-      font-size: 12px;
-      color: var(--sub);
-      margin-bottom: 18px;
-    }
+.synopsis-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(10,10,10,.98);
+  backdrop-filter:blur(25px);
+  z-index:1000;
+  display:flex;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .45s ease;
+  overflow-y:auto;
+}
+.synopsis-overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+.close-btn{
+  position:fixed;
+  top:28px;
+  right:28px;
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.14);
+  color:#fff;
+  font-size:20px;
+  cursor:pointer;
+  z-index:1001;
+}
+.film-strip-content{
+  width:100%;
+  max-width:680px;
+  min-height:100%;
+  padding:100px 40px 70px;
+  background:#141414;
+  border-left:20px solid #090909;
+  border-right:20px solid #090909;
+  box-shadow:0 0 80px rgba(0,0,0,.35);
+}
+.title-large{
+  font-family:"Noto Serif TC", serif;
+  font-size:28px;
+  font-weight:900;
+  margin-bottom:30px;
+}
+.zh-text{
+  font-family:"Noto Serif TC", serif;
+  font-size:18px;
+  line-height:1.9;
+  color:#fff;
+  margin-bottom:40px;
+}
+.en-text-full{
+  font-size:15px;
+  line-height:1.78;
+  color:#9f9f9f;
+}
 
-    .title {
-      font-size: clamp(32px, 5vw, 62px);
-      line-height: 1.02;
-      letter-spacing: -0.04em;
-      margin: 0 0 12px;
-      font-weight: 800;
-    }
+/* ===== cast ===== */
+.cast-section{
+  padding:72px 0 20px;
+}
+.cast-head{
+  margin-bottom:22px;
+}
+.cast-container{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:28px;
+}
+.cast-card{
+  position:relative;
+  overflow:hidden;
+  border-radius:26px;
+  background:#222;
+  box-shadow:0 20px 50px rgba(0,0,0,.28);
+  transition:transform .35s ease;
+  border:1px solid rgba(255,255,255,.06);
+}
+.cast-card:hover{
+  transform:translateY(-6px);
+}
+.cast-img{
+  width:100%;
+  aspect-ratio:3/4;
+  object-fit:cover;
+  filter:saturate(.84) contrast(1.02);
+}
+.cast-info{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:22px 20px 18px;
+  background:linear-gradient(to top, rgba(10,10,10,.88), transparent);
+}
+.actor-name{
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:.02em;
+}
+.character-name{
+  margin-top:6px;
+  font-size:14px;
+  color:rgba(255,255,255,.72);
+  letter-spacing:.06em;
+}
 
-    .subtitle {
-      font-size: clamp(16px, 2vw, 22px);
-      color: var(--sub);
-      margin: 0 0 18px;
-      font-weight: 500;
-    }
+/* ===== trailer ===== */
+.trailer-section{
+  padding:82px 0 18px;
+}
+.trailer-container{
+  width:min(1100px, calc(100% - 32px));
+  margin:0 auto;
+}
+.video-wrapper{
+  position:relative;
+  width:100%;
+  padding-bottom:56.25%;
+  overflow:hidden;
+  border-radius:26px;
+  box-shadow:0 20px 60px rgba(0,0,0,.32);
+  border:1px solid rgba(255,255,255,.06);
+  background:#000;
+}
+.video-wrapper iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
 
-    .lead {
-      font-size: 16px;
-      color: rgba(17,17,17,0.78);
-      margin: 0 0 22px;
-      max-width: 720px;
-    }
+/* ===== crew ===== */
+.crew-simple-section{
+  position:relative;
+  margin-top:80px;
+  padding:110px 20px;
+  background:
+    linear-gradient(180deg, rgba(12,12,12,.54), rgba(12,12,12,.72)),
+    url('CREW_BACKGROUND_IMAGE') center/cover no-repeat;
+}
+.crew-overlay{
+  width:min(880px, 100%);
+  margin:0 auto;
+  background:rgba(20,20,20,.48);
+  border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);
+  border-radius:26px;
+  padding:34px;
+  box-shadow:0 20px 60px rgba(0,0,0,.28);
+}
+.crew-btn{
+  background:transparent;
+  border:1px solid rgba(255,255,255,.55);
+  color:#fff;
+  padding:8px 14px;
+  cursor:pointer;
+  font-size:14px;
+  letter-spacing:2px;
+  border-radius:999px;
+}
+.crew-content{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .6s ease;
+  margin-top:16px;
+}
+.crew-content.show{
+  max-height:320px;
+  overflow-y:auto;
+}
+.crew-content::-webkit-scrollbar{width:4px}
+.crew-content::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.55);
+  border-radius:999px;
+}
+.crew-text{
+  font-size:12px;
+  color:#fff;
+  letter-spacing:2px;
+  line-height:1.72;
+  white-space:normal;
+}
 
-    .actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
+/* ===== IG ===== */
+.ig-section{
+  padding:100px 20px 120px;
+  display:flex;
+  justify-content:center;
+}
+.wall-wrapper{
+  position:relative;
+  width:100%;
+  max-width:500px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  animation:cardEntrance 1.2s cubic-bezier(.165,.84,.44,1) forwards;
+}
+@keyframes cardEntrance{
+  0%{transform:scale(1.06);opacity:0}
+  100%{transform:scale(1);opacity:1}
+}
+.ig-card{
+  width:100%;
+  aspect-ratio:16/9;
+  border-radius:16px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  box-shadow:0 25px 60px rgba(0,0,0,.34);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  border:1px solid rgba(255,255,255,.12);
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+.ig-card:hover{
+  transform:translateY(-8px) scale(1.02);
+  box-shadow:0 35px 80px rgba(0,0,0,.4);
+}
+.ig-header{
+  height:60px;
+  display:flex;
+  align-items:center;
+  padding:0 18px;
+  background:rgba(255,255,255,.08);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.avatar{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:url('https://i.imgur.com/6VBx3io.png') center/cover;
+  margin-right:12px;
+  border:1px solid rgba(255,255,255,.18);
+}
+.username{
+  font-size:15px;
+  font-weight:600;
+  color:#fff;
+  letter-spacing:.5px;
+}
+.preview{
+  flex:1;
+  background:url('https://raw.githubusercontent.com/isufilmtv12nd-web/testing/924a0647385fd7f96e2c2ed21704090330a0f0b7/%E6%B5%B7%E5%A0%B1/20260325_TWC_poster01.jpg') center/cover;
+  filter:grayscale(.1) saturate(.78);
+}
+.ig-footer{
+  height:45px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  color:#fff;
+  background:linear-gradient(to top, rgba(0,0,0,.45), transparent);
+  letter-spacing:2.5px;
+  font-weight:400;
+}
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 0 18px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 600;
-      transition: transform 0.25s ease, opacity 0.25s ease, background 0.25s ease;
-    }
+/* ===== intro text area ===== */
+.content-section{
+  padding:56px 0 40px;
+}
+.content-box{
+  width:min(980px, 100%);
+  margin:0 auto;
+  padding:0 4px;
+}
+.title{
+  font-family:"Noto Serif TC", serif;
+  font-size:40px;
+  margin:0 0 10px;
+}
+.subtitle{
+  color:#b8b8b8;
+  margin-bottom:20px;
+  letter-spacing:.08em;
+}
+.toggle{
+  margin-bottom:22px;
+}
+.btn{
+  padding:10px 16px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  cursor:pointer;
+  margin-right:10px;
+  backdrop-filter:blur(8px);
+}
+.btn.active{
+  background:#e5e5e5;
+  color:#111;
+  border-color:#e5e5e5;
+}
+.text{
+  display:none;
+  line-height:1.85;
+  color:#e9e9e9;
+  font-size:16px;
+}
+.text.active{
+  display:block;
+}
 
-    .btn:hover {
-      transform: translateY(-1px);
-    }
+/* ===== mobile ===== */
+@media (max-width: 920px){
+  .cast-container{grid-template-columns:1fr}
+}
 
-    .btn-primary {
-      background: #111;
-      color: #fff;
-    }
+@media (max-width: 700px){
+  .main-container{width:90vw}
+  .kite-head{width:30px;height:38px}
+  .film-strip-content{
+    padding:88px 22px 56px;
+    border-left:12px solid #090909;
+    border-right:12px solid #090909;
+  }
+  .title-large{font-size:23px}
+  .zh-text{font-size:16px}
+  .en-text-full{font-size:14px}
+  .close-btn{top:18px;right:18px}
+  .crew-overlay{padding:22px}
+  .crew-text{font-size:11px;letter-spacing:1.2px}
+  .title{font-size:32px}
+}
 
-    .btn-secondary {
-      background: rgba(255,255,255,0.88);
-      border: 1px solid rgba(17,17,17,0.08);
-      color: #111;
-    }
-
-    .meta {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .meta-item {
-      padding: 14px 14px 15px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.78);
-      border: 1px solid rgba(17,17,17,0.06);
-    }
-
-    .meta-label {
-      display: block;
-      font-size: 12px;
-      color: var(--sub);
-      margin-bottom: 4px;
-    }
-
-    .meta-value {
-      display: block;
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    section {
-      padding: 18px 0 10px;
-    }
-
-    .section-card {
-      background: rgba(255,255,255,0.72);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 28px;
-    }
-
-    .section-title {
-      margin: 0 0 16px;
-      font-size: clamp(24px, 3vw, 36px);
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-    }
-
-    .section-sub {
-      margin: -6px 0 18px;
-      color: var(--sub);
-      font-size: 14px;
-    }
-
-    .toggle-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-
-    .lang-btn {
-      border: none;
-      cursor: pointer;
-      padding: 10px 16px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 600;
-      background: rgba(17,17,17,0.06);
-      color: #111;
-      transition: all 0.25s ease;
-    }
-
-    .lang-btn.active {
-      background: #111;
-      color: #fff;
-    }
-
-    .lang-block {
-      display: none;
-      font-size: 16px;
-      color: rgba(17,17,17,0.82);
-    }
-
-    .lang-block.active {
-      display: block;
-      animation: fade 0.35s ease;
-    }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .info-box {
-      padding: 20px;
-      border-radius: 22px;
-      background: rgba(255,255,255,0.78);
-      border: 1px solid rgba(17,17,17,0.06);
-    }
-
-    .info-box h3 {
-      margin: 0 0 10px;
-      font-size: 18px;
-    }
-
-    .info-box p,
-    .info-box li {
-      font-size: 15px;
-      color: rgba(17,17,17,0.78);
-    }
-
-    .info-box ul {
-      margin: 0;
-      padding-left: 18px;
-    }
-
-    .quote {
-      font-size: clamp(20px, 2.5vw, 30px);
-      line-height: 1.35;
-      letter-spacing: -0.02em;
-      margin: 0;
-      color: #111;
-      font-weight: 700;
-    }
-
-    .footer {
-      padding: 30px 0 50px;
-      color: rgba(17,17,17,0.48);
-      font-size: 13px;
-      text-align: center;
-    }
-
-    @media (max-width: 920px) {
-      .hero-card {
-        grid-template-columns: 1fr;
-        padding: 20px;
-      }
-
-      .poster-shell {
-        min-height: auto;
-        max-width: 460px;
-        margin: 0 auto;
-      }
-
-      .meta,
-      .info-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .nav-inner {
-        min-height: 58px;
-      }
-
-      .brand {
-        font-size: 14px;
-      }
-
-      .chip {
-        font-size: 12px;
-        padding: 8px 12px;
-      }
-
-      .hero {
-        padding-top: 26px;
-      }
-
-      .hero-card,
-      .section-card {
-        border-radius: 24px;
-      }
-
-      .section-card {
-        padding: 20px;
-      }
-
-      .lead,
-      .lang-block,
-      .info-box p,
-      .info-box li {
-        font-size: 15px;
-      }
-    }
-  </style>
+@media (max-width: 600px){
+  .frame{width:85vw}
+  .poster-box{width:300px;height:450px}
+  .ig-header{height:50px}
+  .avatar{width:30px;height:30px}
+  .username{font-size:14px}
+  .ig-footer{font-size:11px;letter-spacing:1.5px}
+}
+</style>
 </head>
+
 <body>
-  <nav class="nav">
-    <div class="nav-inner">
-      <div class="brand">透明的孩子｜The Transparent Child</div>
-      <div class="nav-links">
-        <a class="chip" href="#about">簡介</a>
-        <a class="chip" href="#story">故事</a>
-        <a class="chip" href="#info">資訊</a>
-        <a class="chip" href="#contact">連結</a>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="kite-group">
+    <div class="kite-head"></div>
+    <div class="kite-string"></div>
+  </div>
+
+  <div class="main-container">
+    <img class="main-img" src="https://raw.githubusercontent.com/isufilmtv12nd-web/testing/main/LOGO%E5%80%91/thewinglesschilds.png" alt="LOGO">
+  </div>
+
+  <div class="scroll-hint">SCROLL</div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-wrap section">
+  <div class="block-sub">Stills</div>
+  <h2 class="block-title">劇照精選</h2>
+
+  <div class="gallery">
+    <div class="frame"><img src="IMAGE_1_URL" alt="劇照 1"></div>
+    <div class="frame"><img src="IMAGE_2_URL" alt="劇照 2"></div>
+    <div class="frame"><img src="IMAGE_3_URL" alt="劇照 3"></div>
+    <div class="frame"><img src="IMAGE_4_URL" alt="劇照 4"></div>
+    <div class="frame"><img src="IMAGE_5_URL" alt="劇照 5"></div>
+    <div class="frame"><img src="IMAGE_6_URL" alt="劇照 6"></div>
+  </div>
+</section>
+
+<!-- SYNOPSIS -->
+<section class="synopsis-section section">
+  <div class="block-sub">Synopsis</div>
+  <h2 class="block-title">故事大綱</h2>
+
+  <div class="synopsis-wrapper">
+    <div class="synopsis-scale-box" id="synopsisScaleBox">
+      <div class="poster-box" id="openSynopsis">
+        <div class="click-badge">故事大綱 SYNOPSIS</div>
+        <img class="poster-img" src="https://raw.githubusercontent.com/isufilmtv12nd-web/testing/924a0647385fd7f96e2c2ed21704090330a0f0b7/%E6%B5%B7%E5%A0%B1/20260325_TWC_poster01.jpg" alt="故事大綱海報">
       </div>
     </div>
-  </nav>
+  </div>
+</section>
 
-  <main>
-    <section class="hero wrap">
-      <div class="hero-card">
-        <div class="poster-shell">
-          <!-- 把下面 src 改成你的海報圖片網址 -->
-          <img
-            src="YOUR_POSTER_IMAGE_URL_HERE"
-            alt="透明的孩子 海報"
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
-          />
-          <div class="poster-fallback" style="display:none;">
-            請把海報網址貼到 <strong>YOUR_POSTER_IMAGE_URL_HERE</strong>
-          </div>
-        </div>
+<div class="synopsis-overlay" id="overlay">
+  <div class="close-btn" id="closeSynopsis">✕</div>
 
-        <div>
-          <div class="eyebrow">Short Film ・ GitHub Pages Version</div>
-          <h1 class="title">透明的孩子</h1>
-          <p class="subtitle">The Transparent Child</p>
-          <p class="lead">
-            有些人活著，卻從未被真正看見。這是一個關於失落、陪伴、記憶與存在感的故事，
-            以安靜卻深刻的方式凝視那些被世界忽略的人。
-          </p>
+  <div class="film-strip-content">
+    <div class="title-large">故事大綱 SYNOPSIS</div>
 
-          <div class="actions" id="contact">
-            <!-- 把下面 href 改成你的 YouTube、預告片或外部頁面 -->
-            <a class="btn btn-primary" href="YOUR_YOUTUBE_OR_TRAILER_LINK" target="_blank" rel="noopener">觀看作品</a>
-            <a class="btn btn-secondary" href="YOUR_EXTERNAL_INFO_LINK" target="_blank" rel="noopener">更多資訊</a>
-          </div>
+    <div class="zh-text">
+      一個雨天，年幼的 Evan 和母親撐著紅色的傘來到福利院。母親滿身傷痕，聲稱會回來接他，但轉身離去，留下 Evan 孤單一人。<br><br>
+      他輾轉於保母家和福利院之間，因語言不通而被孤立，唯一的安慰是母親留下的舊布偶。Evan 渴望被看見與關懷，卻一次次遭遇冷漠和排斥。<br><br>
+      在一次被欺負的事件中，Evan 遇見前來整理弟弟遺物的靜瀾。靜瀾是一名大體化妝師，個性疏離，與人保持距離。Evan 對她產生好奇並尾隨離開福利院。靜瀾起初排斥，但在數次互動後逐漸接納他，並讓他暫時與自己共同生活；靜瀾也在 Evan 身上尋找著弟弟的影子。在參與兩次葬禮以及遺體化妝的觀摩後，Evan 開始對自己的存在感到質疑，並渴望自己有天也能像這些死者一樣受到對待。<br><br>
+      在大體工作室，Evan 對遺體化妝產生濃厚的興趣。他偷偷模仿靜瀾的動作，幻想自己有一天也能擁有名字和身份。然而，靜瀾發現他在自己臉上化妝後，憤怒責罵，想到自己弟弟過世的事而痛苦不已，最後將 Evan 趕走。Evan 而後被遣返。<br><br>
+    </div>
 
-          <div class="meta">
-            <div class="meta-item">
-              <span class="meta-label">類型</span>
-              <span class="meta-value">劇情短片</span>
-            </div>
-            <div class="meta-item">
-              <span class="meta-label">語言</span>
-              <span class="meta-value">中 / 英切換</span>
-            </div>
-            <div class="meta-item">
-              <span class="meta-label">平台</span>
-              <span class="meta-value">GitHub Pages</span>
-            </div>
-          </div>
-        </div>
+    <div class="en-text-full">
+      On a rainy day, young Evan arrives at an orphanage with his mother under a red umbrella. Covered in bruises, she promises that she will come back for him, but turns away and leaves, abandoning Evan alone.<br><br>
+      He drifts between foster homes and the orphanage, isolated due to language barriers. His only comfort is an old rag doll left behind by his mother. Evan longs to be seen and cared for, yet is met time and again with indifference and rejection.<br><br>
+      After being bullied, Evan encounters Jing-Lan, who has come to sort through her younger brother’s belongings. Jing-Lan is a mortician, emotionally distant and withdrawn. Evan becomes curious about her and follows her out of the orphanage. At first, she resists him, but after several encounters, she gradually allows him to stay with her temporarily. In Evan, she begins to see traces of her deceased brother. After attending two funerals and observing the process of postmortem makeup, Evan starts to question his own existence and develops a longing to one day receive the same attention and care as the deceased.<br><br>
+      At the mortuary studio, Evan develops a strong fascination with postmortem makeup. He secretly imitates Jing-Lan’s techniques, imagining that one day he might have a name and an identity of his own. However, when Jing-Lan discovers that he has been applying makeup to his own face, she reacts with anger and scolds him. Overwhelmed by memories of her brother’s death, she breaks down and drives Evan away. Evan is later sent back.<br><br>
+    </div>
+  </div>
+</div>
+
+<!-- CAST -->
+<section class="cast-section section">
+  <div class="cast-head">
+    <div class="block-sub">Cast</div>
+    <h2 class="block-title">主要演員</h2>
+  </div>
+
+  <div class="cast-container">
+    <div class="cast-card">
+      <img src="ACTOR1_IMAGE_URL" class="cast-img" alt="演員 1">
+      <div class="cast-info">
+        <div class="actor-name">演員本名 1</div>
+        <div class="character-name">飾演 角色名 1</div>
       </div>
-    </section>
+    </div>
 
-    <section class="wrap" id="about">
-      <div class="section-card">
-        <h2 class="section-title">作品簡介</h2>
-        <p class="section-sub">支援中英文切換，手機與電腦都能穩定顯示。</p>
-
-        <div class="toggle-row">
-          <button class="lang-btn active" data-lang="zh">中文</button>
-          <button class="lang-btn" data-lang="en">English</button>
-        </div>
-
-        <div class="lang-block active" id="zh">
-          <p>
-            有些人活著，卻從未被看見。
-          </p>
-          <p>
-            無國籍男孩 Evan，在被遺棄與忽視中成長，渴望被命名、被記住。直到他遇見同樣失去至親的大體化妝師靜瀾，
-            兩個孤獨的靈魂短暫相依，卻終將被命運分開。當世界選擇視而不見，你是否仍願意相信自己的存在？
-          </p>
-        </div>
-
-        <div class="lang-block" id="en">
-          <p>
-            Some lives pass by without ever being noticed.
-          </p>
-          <p>
-            Evan, a stateless boy, grows up abandoned and overlooked, longing to be named and remembered.
-            Until he meets Jinglan, a mortuary makeup artist who has also lost someone dear, two solitary souls find brief solace in one another,
-            only to be separated by fate. When the world chooses to look away, do you still believe in your own existence?
-          </p>
-        </div>
+    <div class="cast-card">
+      <img src="ACTOR2_IMAGE_URL" class="cast-img" alt="演員 2">
+      <div class="cast-info">
+        <div class="actor-name">演員本名 2</div>
+        <div class="character-name">飾演 角色名 2</div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <section class="wrap" id="story">
-      <div class="section-card">
-        <h2 class="section-title">核心主題</h2>
-        <div class="info-grid">
-          <div class="info-box">
-            <h3>故事關鍵字</h3>
-            <ul>
-              <li>被遺忘的存在</li>
-              <li>身份與歸屬</li>
-              <li>孤獨與陪伴</li>
-              <li>記憶與失落</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <h3>視覺方向</h3>
-            <p>
-              建議搭配冷色調、留白、柔和玻璃感卡片與大幅海報呈現，讓整體更接近電影官網與 Apple 式極簡展示頁的質感。
-            </p>
-          </div>
-        </div>
+<!-- TRAILER -->
+<section class="trailer-section">
+  <div class="trailer-container">
+    <div class="block-sub">Trailer</div>
+    <h2 class="block-title">預告片</h2>
+
+    <div class="video-wrapper">
+      <iframe
+        src="https://www.youtube.com/embed/YOUTUBE_ID"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- CREW -->
+<section class="crew-simple-section">
+  <div class="crew-overlay">
+    <div class="block-sub">Production Team</div>
+    <h2 class="block-title">劇組人員名單</h2>
+
+    <button class="crew-btn" onclick="toggleCrew()">
+      劇組人員名單 CREW MEMBERS
+    </button>
+
+    <div id="crew" class="crew-content">
+      <div class="crew-text">
+編導 DIRECTOR<br>
+林雅馨 CHRISTINA LIN<br><br>
+
+副導演 ASSISTANT DIRECTOR<br>
+駱玟蒨 LO WEN CHIEN<br><br>
+
+場記 SCRIPT SUPERVISOR<br>
+李頌賢 KENNETH LI<br><br>
+
+製片 LINE PRODUCER<br>
+蘇雪穎 SO SUET WING<br><br>
+
+製片助理 PRODUCER ASSISTANT<br>
+林士生 LIN SHIH SHENG<br><br>
+
+場務 SET COORDINATOR<br>
+李培慈 LI PEI TZU<br><br>
+
+攝影師 CINEMATOGRAPHER<br>
+楊景允 GERALD YANG<br><br>
+
+攝影助理 CAMERA ASSISTANT<br>
+楊睿恩 YANG JUI EN<br>
+李志誠 LEE CHI SHING<br>
+劉文禹 LAU BOON YU<br>
+曾培杰 TSANG PUI KIT OSCAR<br><br>
+
+臺北攝助支援 TAIPEI CAMERA ASSISTANT SUPPORT<br>
+胡庭瀚 CONAN HU<br><br>
+
+燈光師 GAFFER<br>
+鄭文淵 ZHENG WEN YUAN<br>
+林珮晨 PEI CHEN LIN<br><br>
+
+燈光助理 LIGHTING ASSISTANT<br>
+楊理期 YONG LIXIANG<br>
+賴姿廷 LAI ZITING<br><br>
+
+錄音師 SOUND DESIGNER<br>
+施君婷 ANISTON SZE<br><br>
+
+聲音助理 SOUND ASSISTANT<br>
+林程揚 LIN CHENG YANG<br><br>
+
+美術設計 ART DESIGNER<br>
+孫雅妮 SUNNY<br>
+王詩閔 WANG SHIH MIN<br><br>
+
+造型設計 COSTUME DESIGNER<br>
+周詠貴 ZHOU YONG GUI<br><br>
+
+造型助理 COSTUME ASSISTANT<br>
+劉穎 LAU WING<br>
+洪儀潔 HONG YI JIE<br><br>
+
+臺北造型助理 TAIPEI COSTUME ASSISTANT<br>
+林宜蓁 YI CHEN LIN<br><br>
+
+臺北造型支援 TAIPEI COSTUME SUPPORT<br>
+李辰薇 IAMURI<br><br>
+
+剪輯師 EDITOR<br>
+簡子濱 JIAN ZIH BIN<br><br>
+
+高雄側拍師 KAOHSIUNG STILL PHOTOGRAPHER<br>
+郭家均 KUO CHIA CHUN<br><br>
+
+臺北側拍師 TAIPEI STILL PHOTOGRAPHER<br>
+潘若萱 RXUANP<br><br>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <section class="wrap" id="info">
-      <div class="section-card">
-        <h2 class="section-title">一句話</h2>
-        <p class="quote">
-          當世界選擇視而不見，你是否仍願意相信自己的存在？
-        </p>
+<!-- OFFICIAL IG -->
+<section class="ig-section">
+  <div class="wall-wrapper">
+    <a href="https://www.instagram.com/the_wingless_child/" target="_blank" class="ig-card">
+      <div class="ig-header">
+        <div class="avatar"></div>
+        <div class="username">the_wingless_child</div>
       </div>
-    </section>
-  </main>
 
-  <footer class="footer wrap">
-    Built for GitHub Pages · Stable mobile-friendly layout · No embedded inner scrollbars
-  </footer>
+      <div class="preview"></div>
 
-  <script>
-    const buttons = document.querySelectorAll('.lang-btn');
-    const blocks = document.querySelectorAll('.lang-block');
+      <div class="ig-footer">▶ THE WINGLESS CHILD</div>
+    </a>
+  </div>
+</section>
 
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const lang = btn.dataset.lang;
+<!-- OPTIONAL INTRO TEXT -->
+<section class="content-section section">
+  <div class="content-box">
+    <h1 class="title">透明的孩子</h1>
+    <div class="subtitle">The Transparent Child</div>
 
-        buttons.forEach(b => b.classList.remove('active'));
-        blocks.forEach(block => block.classList.remove('active'));
+    <div class="toggle">
+      <button class="btn active" onclick="switchLang('zh', event)">中文</button>
+      <button class="btn" onclick="switchLang('en', event)">English</button>
+    </div>
 
-        btn.classList.add('active');
-        document.getElementById(lang).classList.add('active');
-      });
-    });
-  </script>
+    <div id="zh" class="text active">
+      有些人活著，卻從未被看見。<br><br>
+      無國籍男孩 Evan，在被遺棄與忽視中成長，渴望被命名、被記住。直到他遇見靜瀾，兩個孤獨的靈魂短暫相依。
+    </div>
+
+    <div id="en" class="text">
+      Some lives pass by without ever being noticed.<br><br>
+      Evan, a stateless boy, grows up abandoned and overlooked, longing to be named and remembered, until he meets Jinglan.
+    </div>
+  </div>
+</section>
+
+<script>
+function switchLang(lang, e){
+  document.querySelectorAll('.text').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(lang).classList.add('active');
+  if (e && e.target) e.target.classList.add('active');
+}
+
+function toggleCrew(){
+  document.getElementById('crew').classList.toggle('show');
+}
+
+/* synopsis card scaling */
+const synopsisScaleBox = document.getElementById('synopsisScaleBox');
+function updateSynopsisScale(){
+  if(!synopsisScaleBox) return;
+  const baseW = 400;
+  const baseH = 600;
+  const screenW = Math.min(window.innerWidth - 40, 520);
+  const screenH = window.innerHeight;
+  const scale = Math.min(screenW / baseW, screenH / baseH, 1) * 0.95;
+  synopsisScaleBox.style.transform = `scale(${scale})`;
+}
+window.addEventListener('resize', updateSynopsisScale);
+window.addEventListener('load', updateSynopsisScale);
+
+/* overlay logic */
+const openBtn = document.getElementById('openSynopsis');
+const closeBtn = document.getElementById('closeSynopsis');
+const overlay = document.getElementById('overlay');
+
+if(openBtn && closeBtn && overlay){
+  openBtn.onclick = () => overlay.classList.add('active');
+  closeBtn.onclick = (e) => {
+    e.stopPropagation();
+    overlay.classList.remove('active');
+  };
+  overlay.onclick = (e) => {
+    if(e.target === overlay) overlay.classList.remove('active');
+  };
+}
+</script>
+
 </body>
 </html>
-
