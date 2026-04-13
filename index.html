@@ -1,1 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>透明的孩子 | The Transparent Child</title>
+  <meta name="description" content="《透明的孩子》作品介紹頁，適用於 GitHub Pages 的穩定靜態版本。" />
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --bg: #f5f5f7;
+      --card: rgba(255,255,255,0.72);
+      --text: #111111;
+      --sub: rgba(17,17,17,0.64);
+      --line: rgba(17,17,17,0.08);
+      --shadow: 0 20px 60px rgba(0,0,0,0.10);
+      --radius: 28px;
+      --max: 1180px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.95), rgba(245,245,247,0.92) 40%, rgba(236,236,239,0.92) 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang TC", "Noto Sans TC", sans-serif;
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .wrap {
+      width: min(calc(100% - 28px), var(--max));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(18px);
+      background: rgba(245,245,247,0.68);
+      border-bottom: 1px solid rgba(17,17,17,0.06);
+    }
+
+    .nav-inner {
+      width: min(calc(100% - 28px), var(--max));
+      margin: 0 auto;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: var(--sub);
+      background: rgba(255,255,255,0.58);
+      border: 1px solid rgba(17,17,17,0.06);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.9);
+    }
+
+    .hero {
+      padding: 48px 0 22px;
+    }
+
+    .hero-card {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 34px;
+      align-items: center;
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--line);
+      border-radius: 36px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 28px;
+    }
+
+    .poster-shell {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(17,17,17,0.06);
+      box-shadow: 0 12px 34px rgba(0,0,0,0.09);
+      aspect-ratio: 3 / 4;
+      min-height: 380px;
+    }
+
+    .poster-shell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .poster-fallback {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+      color: rgba(17,17,17,0.46);
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(236,236,239,0.9));
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(17,17,17,0.06);
+      font-size: 12px;
+      color: var(--sub);
+      margin-bottom: 18px;
+    }
+
+    .title {
+      font-size: clamp(32px, 5vw, 62px);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      margin: 0 0 12px;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      font-size: clamp(16px, 2vw, 22px);
+      color: var(--sub);
+      margin: 0 0 18px;
+      font-weight: 500;
+    }
+
+    .lead {
+      font-size: 16px;
+      color: rgba(17,17,17,0.78);
+      margin: 0 0 22px;
+      max-width: 720px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: transform 0.25s ease, opacity 0.25s ease, background 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: #111;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(17,17,17,0.08);
+      color: #111;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .meta-item {
+      padding: 14px 14px 15px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(17,17,17,0.06);
+    }
+
+    .meta-label {
+      display: block;
+      font-size: 12px;
+      color: var(--sub);
+      margin-bottom: 4px;
+    }
+
+    .meta-value {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    section {
+      padding: 18px 0 10px;
+    }
+
+    .section-card {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .section-title {
+      margin: 0 0 16px;
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .section-sub {
+      margin: -6px 0 18px;
+      color: var(--sub);
+      font-size: 14px;
+    }
+
+    .toggle-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      border: none;
+      cursor: pointer;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      background: rgba(17,17,17,0.06);
+      color: #111;
+      transition: all 0.25s ease;
+    }
+
+    .lang-btn.active {
+      background: #111;
+      color: #fff;
+    }
+
+    .lang-block {
+      display: none;
+      font-size: 16px;
+      color: rgba(17,17,17,0.82);
+    }
+
+    .lang-block.active {
+      display: block;
+      animation: fade 0.35s ease;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .info-box {
+      padding: 20px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(17,17,17,0.06);
+    }
+
+    .info-box h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .info-box p,
+    .info-box li {
+      font-size: 15px;
+      color: rgba(17,17,17,0.78);
+    }
+
+    .info-box ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .quote {
+      font-size: clamp(20px, 2.5vw, 30px);
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      margin: 0;
+      color: #111;
+      font-weight: 700;
+    }
+
+    .footer {
+      padding: 30px 0 50px;
+      color: rgba(17,17,17,0.48);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 920px) {
+      .hero-card {
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+
+      .poster-shell {
+        min-height: auto;
+        max-width: 460px;
+        margin: 0 auto;
+      }
+
+      .meta,
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-inner {
+        min-height: 58px;
+      }
+
+      .brand {
+        font-size: 14px;
+      }
+
+      .chip {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+
+      .hero {
+        padding-top: 26px;
+      }
+
+      .hero-card,
+      .section-card {
+        border-radius: 24px;
+      }
+
+      .section-card {
+        padding: 20px;
+      }
+
+      .lead,
+      .lang-block,
+      .info-box p,
+      .info-box li {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="brand">透明的孩子｜The Transparent Child</div>
+      <div class="nav-links">
+        <a class="chip" href="#about">簡介</a>
+        <a class="chip" href="#story">故事</a>
+        <a class="chip" href="#info">資訊</a>
+        <a class="chip" href="#contact">連結</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero wrap">
+      <div class="hero-card">
+        <div class="poster-shell">
+          <!-- 把下面 src 改成你的海報圖片網址 -->
+          <img
+            src="YOUR_POSTER_IMAGE_URL_HERE"
+            alt="透明的孩子 海報"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+          />
+          <div class="poster-fallback" style="display:none;">
+            請把海報網址貼到 <strong>YOUR_POSTER_IMAGE_URL_HERE</strong>
+          </div>
+        </div>
+
+        <div>
+          <div class="eyebrow">Short Film ・ GitHub Pages Version</div>
+          <h1 class="title">透明的孩子</h1>
+          <p class="subtitle">The Transparent Child</p>
+          <p class="lead">
+            有些人活著，卻從未被真正看見。這是一個關於失落、陪伴、記憶與存在感的故事，
+            以安靜卻深刻的方式凝視那些被世界忽略的人。
+          </p>
+
+          <div class="actions" id="contact">
+            <!-- 把下面 href 改成你的 YouTube、預告片或外部頁面 -->
+            <a class="btn btn-primary" href="YOUR_YOUTUBE_OR_TRAILER_LINK" target="_blank" rel="noopener">觀看作品</a>
+            <a class="btn btn-secondary" href="YOUR_EXTERNAL_INFO_LINK" target="_blank" rel="noopener">更多資訊</a>
+          </div>
+
+          <div class="meta">
+            <div class="meta-item">
+              <span class="meta-label">類型</span>
+              <span class="meta-value">劇情短片</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">語言</span>
+              <span class="meta-value">中 / 英切換</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">平台</span>
+              <span class="meta-value">GitHub Pages</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" id="about">
+      <div class="section-card">
+        <h2 class="section-title">作品簡介</h2>
+        <p class="section-sub">支援中英文切換，手機與電腦都能穩定顯示。</p>
+
+        <div class="toggle-row">
+          <button class="lang-btn active" data-lang="zh">中文</button>
+          <button class="lang-btn" data-lang="en">English</button>
+        </div>
+
+        <div class="lang-block active" id="zh">
+          <p>
+            有些人活著，卻從未被看見。
+          </p>
+          <p>
+            無國籍男孩 Evan，在被遺棄與忽視中成長，渴望被命名、被記住。直到他遇見同樣失去至親的大體化妝師靜瀾，
+            兩個孤獨的靈魂短暫相依，卻終將被命運分開。當世界選擇視而不見，你是否仍願意相信自己的存在？
+          </p>
+        </div>
+
+        <div class="lang-block" id="en">
+          <p>
+            Some lives pass by without ever being noticed.
+          </p>
+          <p>
+            Evan, a stateless boy, grows up abandoned and overlooked, longing to be named and remembered.
+            Until he meets Jinglan, a mortuary makeup artist who has also lost someone dear, two solitary souls find brief solace in one another,
+            only to be separated by fate. When the world chooses to look away, do you still believe in your own existence?
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" id="story">
+      <div class="section-card">
+        <h2 class="section-title">核心主題</h2>
+        <div class="info-grid">
+          <div class="info-box">
+            <h3>故事關鍵字</h3>
+            <ul>
+              <li>被遺忘的存在</li>
+              <li>身份與歸屬</li>
+              <li>孤獨與陪伴</li>
+              <li>記憶與失落</li>
+            </ul>
+          </div>
+          <div class="info-box">
+            <h3>視覺方向</h3>
+            <p>
+              建議搭配冷色調、留白、柔和玻璃感卡片與大幅海報呈現，讓整體更接近電影官網與 Apple 式極簡展示頁的質感。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" id="info">
+      <div class="section-card">
+        <h2 class="section-title">一句話</h2>
+        <p class="quote">
+          當世界選擇視而不見，你是否仍願意相信自己的存在？
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    Built for GitHub Pages · Stable mobile-friendly layout · No embedded inner scrollbars
+  </footer>
+
+  <script>
+    const buttons = document.querySelectorAll('.lang-btn');
+    const blocks = document.querySelectorAll('.lang-block');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+
+        buttons.forEach(b => b.classList.remove('active'));
+        blocks.forEach(block => block.classList.remove('active'));
+
+        btn.classList.add('active');
+        document.getElementById(lang).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
 
